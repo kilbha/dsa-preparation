@@ -162,3 +162,37 @@ function reverseList(head: ListNode | null): ListNode | null {
     return new_list;
     
 };
+
+// Palindrome Linked List
+function isPalindrome(head: ListNode | null): boolean {
+    if( head === null || head.next === null) return true;
+
+    // Middle of linked list
+    let slow : ListNode | null = head;
+    let fast : ListNode | null = head;
+
+    while( fast !== null && fast.next !== null){
+        slow = slow!.next;
+        fast = fast.next.next;
+    }
+
+    // Reverse the second half of linked list
+    let new_list : ListNode | null= null;
+    
+
+    while(slow){
+        let next_node = slow.next;
+        slow.next = new_list;
+        new_list = slow;
+        slow = next_node;
+    }
+
+    
+    while(new_list != null){
+        if(head!.val !== new_list.val) return false;
+        head = head!.next;
+        new_list = new_list.next;
+    }
+
+    return true;
+};
