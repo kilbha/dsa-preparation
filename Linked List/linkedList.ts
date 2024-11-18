@@ -196,3 +196,117 @@ function isPalindrome(head: ListNode | null): boolean {
 
     return true;
 };
+
+
+
+// Design a hashset
+class MyHashSet {
+    private readonly bucketsize:number;
+    private buckets: number [][];
+    constructor() {
+        this.bucketsize = 769;
+        this.buckets = Array.from({length:this.bucketsize},() => []);
+    }
+
+    // Hash function to calculate the index for the key
+    private hash(key:number){
+        return key % this.bucketsize;
+    }
+
+    // Add the key to the set
+    add(key: number): void {
+        const hashIndex = this.hash(key);
+        const bucket = this.buckets[hashIndex];
+        if(!bucket.includes(key)){
+            bucket.push(key);
+        }
+    }
+
+    // Remove the key from the set
+    remove(key: number): void {
+        const hashIndex = this.hash(key);
+        const bucket = this.buckets[hashIndex];
+        if(bucket.indexOf(key) !== -1){
+            bucket.splice(bucket.indexOf(key),1);
+        }
+    }
+
+    // Check if the key exists in the set
+    contains(key: number): boolean {
+        const hashIndex = this.hash(key);
+        const bucket = this.buckets[hashIndex];
+        return bucket.includes(key);
+    }
+}
+
+// Better version is 
+class MyHashSet2 {
+    private set: Set<number> = new Set();
+    constructor() {
+        this.set = new Set();
+    }
+
+    add(key: number): void {
+        this.set.add(key);
+    }
+
+    remove(key: number): void {
+        this.set.delete(key);
+    }
+
+    contains(key: number): boolean {
+        return this.set.has(key);
+    }
+}
+
+
+// Design Hashmap
+class MyHashMap {
+    private size: number;
+    private buckets: [number,number][][];
+    constructor() {
+        this.size = 1000;
+        this.buckets = Array.from({length:this.size},() => []);
+    }
+
+    private hash(key:number){
+        return key % this.size;
+    }
+    put(key: number, value: number): void {
+        const hashKey = this.hash(key);
+        const bucket = this.buckets[hashKey];
+        for(const pair of bucket){
+            if(pair[0] == key){
+                pair[1] = value;
+                return 
+            }
+        }
+        bucket.push([key,value]);
+    }
+
+    get(key:number){
+        const hashKey = this.hash(key);
+        const bucket = this.buckets[hashKey];
+        for(const pair of bucket){
+            if(pair[0] == key){                
+                return pair[1];
+            }
+        }
+        return -1;
+    }
+
+    remove(key:number):void{
+        const hashKey = this.hash(key);
+        const bucket = this.buckets[hashKey];
+        for (let i = 0; i < bucket.length; i++) {
+            if (bucket[i][0] === key) {
+                bucket.splice(i, 1); // Remove the key-value pair
+                return;
+            }
+        }
+        
+    }
+}   
+
+
+
